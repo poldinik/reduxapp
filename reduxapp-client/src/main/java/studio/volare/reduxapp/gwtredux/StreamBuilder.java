@@ -46,7 +46,6 @@ public class StreamBuilder<T> extends Composite {
     void setSummary(AsyncSnapshotFactory.AsyncSnapshot<T> current){
         summary = current;
         GWT.log(current.connectionState.toString());
-        //Ogni volta che c'è un setSummary riappende l'oggetto ricostruito
         build(current);
     }
 
@@ -59,26 +58,8 @@ public class StreamBuilder<T> extends Composite {
         }
     }
 
-    // if (widget.stream != null) {
-    //      _subscription = widget.stream.listen((T data) {
-    //        setState(() {
-    //          _summary = widget.afterData(_summary, data);
-    //        });
-    //      }, onError: (Object error) {
-    //        setState(() {
-    //          _summary = widget.afterError(_summary, error);
-    //        });
-    //      }, onDone: () {
-    //        setState(() {
-    //          _summary = widget.afterDone(_summary);
-    //        });
-    //      });
-    //      _summary = widget.afterConnected(_summary);
-    //    }
 
     void subscribe(){
-
-        //TODO: approfondire per fare subscribe tramite observable on Complete on error ecc..
         if(stream != null){
             stream.subscribe(new Observer<T>() {
                 @Override
@@ -103,8 +84,6 @@ public class StreamBuilder<T> extends Composite {
                     setSummary(afterDone(summary));
                 }
             });
-
-            //setSummary(afterData(summary, data));
             GWT.log("afterConnected(summary)");
             setSummary(afterConnected(summary));
         }

@@ -73,18 +73,12 @@ public class Store<S> {
     List<NextDispatcher> createDispatchers(List<Middleware> middleware, NextDispatcher reduceAndNotify){
         dispatchers = new ArrayList<>();
         dispatchers.add(reduceAndNotify);
-
         Collections.reverse(middleware);
-        //convert each Middleware into a NextDispatcher
-        //TODO: verificare correttezza, semplicemente una funziona chiama la prossima, dove l'ultima è un Next Dispatcher
-        //TODO: implementato chiamando il root reducer dello stato
         for(Middleware nextMiddleware: middleware) {
             NextDispatcher next = dispatchers.get(dispatchers.size() - 1);
             dispatchers.add(action -> nextMiddleware.call(this, action, next));
         }
-
         Collections.reverse(dispatchers);
-
         return dispatchers;
     }
 

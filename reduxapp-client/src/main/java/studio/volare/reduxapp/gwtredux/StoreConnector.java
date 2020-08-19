@@ -27,12 +27,10 @@ public class StoreConnector<S, ViewModel> extends Composite {
         initWidget(ourUiBinder.createAndBindUi(this));
         this.builder = builder;
         this.converter = converter;
-        //TODO: store deve arrivare da qualche parte, sarebbe meglio tramide CDI tipo
+        //TODO: improve store injection
         this.store = StoreRepository.getInstance().getStore();
         this.storeStreamListener = new StoreStreamListener<>(builder, converter, store);
         root.add(storeStreamListener);
     }
-
-
 
 }
