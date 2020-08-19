@@ -1,9 +1,11 @@
-package studio.volare.reduxapp.redux;
+package studio.volare.reduxapp.gwtredux;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import studio.volare.reduxapp.redux.Store;
+import studio.volare.reduxapp.redux.StoreRepository;
 
 public class StoreConnector<S, ViewModel> extends Composite {
 

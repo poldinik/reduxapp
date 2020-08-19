@@ -1,15 +1,13 @@
-package studio.volare.reduxapp.redux;
+package studio.volare.reduxapp.gwtredux;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
-import studio.volare.reduxapp.MainView;
+import studio.volare.reduxapp.redux.Store;
 
 public class StoreStreamListener<S, ViewModel> extends Composite {
     final ViewModelBuilder<ViewModel> builder;
@@ -25,9 +23,7 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
     OnInitBuildCallback<ViewModel> onInitialBuild;
     Observable<ViewModel> stream;
     ViewModel latestValue;
-
-    @UiField
-    HTMLPanel panel;
+    @UiField HTMLPanel root;
 
     interface StoreStreamListenerUiBinder extends UiBinder<Widget, StoreStreamListener> {
     }
@@ -40,12 +36,15 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
         this.converter = converter;
         this.store = store;
         this.rebuildOnChange = true;
-
         latestValue = converter.convert(store);
         createStream();
+        //builder.build(latestValue) --> se c'è questo non c'è build
+        build();
+    }
 
-        panel.add(builder.build(latestValue));
-
+    void build(){
+        root.clear();
+        root.add(new StreamBuilder<>(stream, snapshot -> builder.build(latestValue)));
     }
 
     ViewModel mapConverter(S state){
@@ -86,8 +85,6 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
         //        // transformations, such as ignoreChange.
         //        .transform(StreamTransformer.fromHandlers(handleData: _handleChange));
 
-
-
     }
 
     void handleChange(ViewModel vm){
@@ -95,7 +92,4 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
         latestValue = vm;
     }
 
-    Widget build(){
-        return null;
-    }
 }

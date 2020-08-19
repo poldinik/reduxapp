@@ -3,29 +3,22 @@ package studio.volare.reduxapp;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+import studio.volare.reduxapp.gwtredux.StoreConnector;
+import studio.volare.reduxapp.gwtredux.StoreConverter;
 import studio.volare.reduxapp.redux.*;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class App implements EntryPoint {
 
 	public void onModuleLoad() {
-		//MainView mainView = new MainView();
 
+		Middleware<AppState> appStateMiddleware = new AppStateMiddleware();
+		List<Middleware> middleware = Collections.singletonList(appStateMiddleware);
 
-		//simula una sorta di application scoped....
+		//simula una sorta di injection application scoped....
 		StoreRepository.getInstance().setStore(
-				new Store<>(
-						null,
-						AppState.init(),
-						new ArrayList<>(),
-						true,
-						true
-				)
+				new Store<>(new AppStateReducer(), AppState.init(), middleware, true, true)
 		);
 
 		RootPanel
@@ -34,42 +27,27 @@ public class App implements EntryPoint {
 						new StoreConnector<>(
 								(StoreConverter<AppState, MainView.ViewModel>) store -> new MainView.ViewModel() {
 									@Override
-									public String getTitle() {
-										return store.getState().getTitle();
+									public boolean isLoading() {
+										return store.getState().isLoading();
 									}
 
 									@Override
-									public void setLoading(boolean loading) {
-										store.dispatch(new SetLoadingAction(loading));
+									public String getText() {
+										return store.getState().getText();
+									}
+
+									@Override
+									public void changeTitle(String title) {
+										GWT.log("store.dispatch(new GetRandomString());");
+										store.dispatch(new LoadingAction(true));
+										store.dispatch(new GetRandomText());
 									}
 								},
-						MainView::new
-				)
+								MainView::new
+						)
 		);
 
 
-		MyState state = new MyState("ddd");
-
-
-//		Store<MyState> store = Store.getInstance();
-//		store.init(state);
-//
-//		GWT.log(store.getState().getState());
-//
-//
-//
-
-		//http://reactivex.io/documentation/operators.html
-		Observable.just("Hello world").subscribe(GWT::log);
-		Observable.range(0,10).map(this::square).filter(n -> n > 10).subscribe(n -> GWT.log(n.toString()));
-		Flowable.range(0,10).map(this::square).subscribe(n -> GWT.log(n.toString()));
-
-		//Va all'infinito, occhio
-		//RxFibonacci.fibs().subscribe(n -> GWT.log(n.toString()));
-	}
-
-	private int square(Integer n) {
-		return n*n;
 	}
 
 }

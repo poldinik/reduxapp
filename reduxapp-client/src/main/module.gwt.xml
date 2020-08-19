@@ -4,7 +4,12 @@
   <inherits name="io.reactivex.RxJava"/>
   <inherits name="elemental2.core.Core"/>
   <inherits name="elemental2.dom.Dom"/>
-<!--  <inherits name="dagger.Dagger" />-->
+  <inherits name="gwt.material.design.GwtMaterialWithJQuery"/>
+  <inherits name="gwt.material.design.jquery.JQuery"/>
+  <inherits name="gwt.material.design.GwtMaterialDesignBasic"/>
+  <inherits name="gwt.material.design.themes.ThemeOrangeResources"/>
+  <inherits name="gwt.material.design.addins.GwtMaterialAddins" />
+  <inherits name="gwt.material.design.incubator.AddinsIncubator"/>
   <source path="" />
 
   <entry-point class="studio.volare.reduxapp.App" />

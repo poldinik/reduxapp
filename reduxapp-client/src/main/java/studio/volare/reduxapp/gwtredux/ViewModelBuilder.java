@@ -1,4 +1,4 @@
-package studio.volare.reduxapp.redux;
+package studio.volare.reduxapp.gwtredux;
 
 import com.google.gwt.user.client.ui.Widget;
 

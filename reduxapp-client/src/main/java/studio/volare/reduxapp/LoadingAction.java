@@ -1,8 +1,9 @@
 package studio.volare.reduxapp;
 
-public class SetLoadingAction {
+public class LoadingAction {
     final boolean loading;
-    public SetLoadingAction(boolean loading) {
+
+    public LoadingAction(boolean loading) {
         this.loading = loading;
     }
 }
