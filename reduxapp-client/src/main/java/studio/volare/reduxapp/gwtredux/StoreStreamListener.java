@@ -38,7 +38,6 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
         this.rebuildOnChange = true;
         latestValue = converter.convert(store);
         createStream();
-        //builder.build(latestValue) --> se c'è questo non c'è build
         build();
     }
 
@@ -48,7 +47,6 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
     }
 
     ViewModel mapConverter(S state){
-        //return widget.converter(widget.store);
         return converter.convert(store);
     }
 
@@ -63,28 +61,12 @@ public class StoreStreamListener<S, ViewModel> extends Composite {
         if(ignoreChange != null){
             return !ignoreChange(state);
         }
-
         return true;
     }
 
     void createStream(){
-
-        //stream = (Observable<S>) store.onChange().map(this::mapConverter).subscribe(this::handleChange);
-
         stream = store.onChange().map(this::mapConverter);
         stream.subscribe(this::handleChange);
-
-        //stream = widget.store.onChange
-        //        .where(_ignoreChange)
-        //        .map(_mapConverter)
-        //        // Don't use `Stream.distinct` because it cannot capture the initial
-        //        // ViewModel produced by the `converter`.
-        //        .where(_whereDistinct)
-        //        // After each ViewModel is emitted from the Stream, we update the
-        //        // latestValue. Important: This must be done after all other optional
-        //        // transformations, such as ignoreChange.
-        //        .transform(StreamTransformer.fromHandlers(handleData: _handleChange));
-
     }
 
     void handleChange(ViewModel vm){

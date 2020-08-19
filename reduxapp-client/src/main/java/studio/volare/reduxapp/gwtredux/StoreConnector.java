@@ -15,7 +15,7 @@ public class StoreConnector<S, ViewModel> extends Composite {
     final StoreStreamListener<S, ViewModel> storeStreamListener;
 
     @UiField
-    HTMLPanel panel;
+    HTMLPanel root;
 
     interface StoreConnectorUiBinder extends UiBinder<Widget, StoreConnector> {
     }
@@ -30,7 +30,7 @@ public class StoreConnector<S, ViewModel> extends Composite {
         //TODO: store deve arrivare da qualche parte, sarebbe meglio tramide CDI tipo
         this.store = StoreRepository.getInstance().getStore();
         this.storeStreamListener = new StoreStreamListener<>(builder, converter, store);
-        panel.add(storeStreamListener);
+        root.add(storeStreamListener);
     }
 
 
