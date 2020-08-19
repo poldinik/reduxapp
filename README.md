@@ -1,1 +1,8 @@
-reduxapp GWT project
+# reduxapp GWT project
+
+
+## 
+
+`mvn install`
+
+`sh run.sh run`
